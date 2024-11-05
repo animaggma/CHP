@@ -10,6 +10,25 @@ public:
         generateKey();
     }
 
+    string encryptCaesar(string text, int shift) {
+        string result = "";
+        for (char c : text) {
+            if (isupper(c)) {
+                result += char(int(c + shift - 'A') % 26 + 'A');
+            } else if (islower(c)) {
+                result += char(int(c + shift - 'a') % 26 + 'a');
+            } else {
+                result += c;
+            }
+        }
+        return result;
+    }
+
+    string decryptCaesar(string text, int shift) {
+        return encryptCaesar(text, 26 - (shift % 26));  
+    }
+
+
     void Encrypt(vector<char>& word) {
         for (int i = 0; i < word.size(); i++) {
             for (int j = 0; j < text.size(); j++) {
@@ -121,12 +140,11 @@ int main() {
     }
 
     cout << "\nEnter a keyword for Vigenère Cipher: ";
-    string key;
-    cin >> key;
+    string vigenereKey;
+    cin >> vigenereKey;
 
     string result(word.begin(), word.end());
-
-    string vigenereKey = program.generateVigenereKey(result, key);
+    string vigenereGeneratedKey = program.generateVigenereKey(result, vigenereKey);
 
     cout << "Choose action for Vigenère Cipher:\n";
     cout << "1. Encrypt\n2. Decrypt\n";
@@ -134,14 +152,42 @@ int main() {
     cin >> choice;
 
     if (choice == 1) {
-        string encryptedVigenere = program.encryptVigenere(result, vigenereKey);
+        string encryptedVigenere = program.encryptVigenere(result, vigenereGeneratedKey);
         cout << "Encrypted message with Vigenère Cipher: " << encryptedVigenere << endl;
+        result = encryptedVigenere; 
     } else if (choice == 2) {
-        string decryptedVigenere = program.decryptVigenere(result, vigenereKey);
+        string decryptedVigenere = program.decryptVigenere(result, vigenereGeneratedKey);
         cout << "Decrypted message with Vigenère Cipher: " << decryptedVigenere << endl;
+        result = decryptedVigenere; 
+    } else {
+        cout << "Invalid choice.\n";
+        return 1;
+    }
+
+    cout << "\nEnter a shift value for Caesar Cipher: ";
+    int shift;
+    cin >> shift;
+
+    cout << "Choose action for Caesar Cipher:\n";
+    cout << "1. Encrypt\n2. Decrypt\n";
+    cout << "Your choice: ";
+    cin >> choice;
+
+    if (choice == 1) {
+        string encryptedCaesar = program.encryptCaesar(result, shift);
+        cout << "Encrypted message with Caesar Cipher: " << encryptedCaesar << endl;
+    } else if (choice == 2) {
+        string decryptedCaesar = program.decryptCaesar(result, shift);
+        cout << "Decrypted message with Caesar Cipher: " << decryptedCaesar << endl;
     } else {
         cout << "Invalid choice.\n";
     }
-
-    return 0;
-}
+    
+    
+    
+    
+    
+}  
+    
+    
+    
